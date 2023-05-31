@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search results for 
+{% endblock %}
+
+{% block main %}
+<h1 id="header" style="text-align: left; margin-left: 5%;"> {{ header }} </h1>
+  <body> 
+    <div style="display: flex;"> 
+      <div class="sidenav">
+        <h5 style="text-align: left; margin-left: 2%; text-decoration: underline;"> Filter results </h5><br>
+        <h6 style="text-align: left; margin-left: 2%;"> Object Type</h6>
+        {% for medium in mediums %}
+          <div class="checkbox">
+            <label><input type="checkbox" id="checkbox" data-type="{{ medium }}"class="icheck" {% if medium in selectedTypes %} checked {% endif %}> {{ medium }} </label>
+          </div>
+        {% endfor %} <br>
+        <h6 style="text-align: left; margin-left: 2%;"> Date </h6>
+          <div style="text-align: left; margin-left: 3%"> From </div>
+        <div  class="form-group">
+          <input autocomplete="off" style="width: 90%;border-color: #d4d6d8;"  class="form-control mx-auto" id="fromDate" name="dateFrom" placeholder="Enter a year" type="text" >
+        </div>
+
+        <div style="text-align: left; margin-left: 3%"> To </div>
+        <div class="form-group">
+          <input autocomplete="off" style="width: 90%;border-color: #d4d6d8;"  class="form-control mx-auto" id="toDate" name="toDate" placeholder="Enter a year" type="text" >
+        </div>
+        <button id="filter" class="btn btn-primary mt-3" style="border-radius: 10%; background-color: white; color: #495551; border-color: #d4d6d8;" type="submit"> Filter </button>
+      </div>
+
+<div class="main-content">  
+  {% for artwork in works %}
+    <div class="container">
+      <div class="column-1">
+        <a href="{{ artwork.url }}" target="_blank" style="width: auto;"><img src="{{ artwork.image_url }}"></a>
+      </div>
+      <div class="column-2">
+        <div class="title"> <h5><a href="{{ artwork.url }}" target="_blank"> {{ artwork.title }} </a></h5></div>
+        <div style="color:#495551;" class="date"> <h6>{{ artwork.date }}</h6></div>
+        <div style="color:#495551;" class="artist"><h6> {{ artwork.artist }} </h6></div> 
+      </div>
+      <div class="column-3">
+        <div class="museum"> <a href="{{ artwork.museum_url }}" target="_blank"> {{ artwork.museum }} </a></div>
+      </div>
+    </div>
+  {% endfor %}
+
+  <div class="container" style="bottom: 0; border-bottom: none;">
+    <nav aria-label="...">
+      <ul class="pagination">
+        {% if works.has_prev %}
+          <li class="page-item">
+            <a class="page-link" href="{{ url_for('results', page=works.prev_num) }}">Previous</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+          </li>
+        {% endif %}
+
+        {% for num in works.iter_pages() %}
+          {% if num %}
+            {% if num == works.page %}
+              <li class="page-item active">
+                <span style="background-color: #d4d6d8; border-color: #d4d6d8; color: #495551;" class="page-link">
+                  <span class="sr-only"> {{ num }} </span>
+                </span>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="{{ url_for('results', page=num) }}"> {{ num }} </a>
+              </li>
+            {% endif %}
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link"> ... </span>
+            </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if works.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="{{ url_for('results', page=works.next_num) }}"> Next </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link"> Next </span>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    function showSpinner() {
+          document.getElementById('spinner').style.display = 'block';
+      }
+    document.getElementById("filter").addEventListener("click", function() {
+      getFilters();
+    });
+
+    function getFilters() {
+      // Get the selected checkbox values
+      var selectedTypes = [];
+      $(".icheck").each(function() {
+        if ($(this).is(":checked")) {
+          var type = $(this).attr("data-type");
+          selectedTypes.push(type);  
+        }
+      });
+      // Get date values
+      var fromDate = document.getElementById("fromDate").value;
+      var toDate = document.getElementById("toDate").value;
+
+      // Send information back to app.py
+      $.ajax({
+      url: '/apply_filter',
+      type: 'POST',
+      data: {
+        selectedTypes: selectedTypes,
+        fromDate: fromDate,
+        toDate: toDate
+      },
+      success: function(response) {
+        document.write(response);
+
+      }
+    });
+  }
+  </script>
+</body>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Museum Conventus
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+{% endblock %}
+
+{% block main %}
+<script>
+    function showSpinner() {
+    
+    document.getElementById('overlay').style.display = 'block'; 
+    document.getElementById('spinner').style.display = 'block'; 
+   
+}
+</script>
+
+    <body background="static/cloud.jpg">
+            <h1 id="h1" style="padding-top: 7%;"> Explore museum collections </h1>
+                <form id="searchbar" action="/search" method="post" onsubmit="return showSpinner()">
+                    <div id="form" class="form-group mt-5">
+                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="keyword" name="keyword" placeholder="Enter a search term" type="text" required>
+                    <button class="btn btn-primary mt-3" id="button" type="submit" onsubmit="return showSpinner()"> Search </button>
+                    </div>
+                <div style="color: #495551;" class="caption"> <span style="font-style: italic;"> Study of clouds above a wide landscape</span>, John Constable. © V&A </div>
+                </form>
+                <div id="overlay" class="hidden"></div> 
+                <div class="hidden" id="spinner"></div>
+        <div style="color: #495551; bottom:0" class="caption"> <span style="font-style: italic;"> Study of clouds above a wide landscape</span>, John Constable. © V&A </div>
+    </body>
+    
+{% endblock %}
+

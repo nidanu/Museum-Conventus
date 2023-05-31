@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    About
+{% endblock %}
+
+{% block main %}
+<body background="static/background.jpg" style="background-attachment: fixed; background-size: contain;">
+    <h1 style="text-align: left; margin-left: 50px; padding-bottom: 50px;"> About Museum Conventus </h1>
+    <div class="textbox">
+        <p> Museum Conventus provides easy access to museum collections and facilitates locating items across the globe.</p>
+        <p> Inspired by JSTOR, Museum Conventus was created as part of a university programming module. </p>
+        <p style="font-weight: bold;"> Good to know: </p>
+        <p> 
+            The V&A and MET APIs are capped at 100 results per request. Museum Conventus makes use of open access APIs, which may result
+            in slow data collection rates. 
+        </p>
+        <p style="font-weight: bold;"> How are my search results obtained? </p>
+        <p> 
+            Museum Conventus uses the user's search term in the API requests. Each museum returns the results that are deemed relevant
+            according to their search criteria. They are ordered by title and artist. 
+        </p>
+    </div>
+    <div style="color: #d4d6d8;" class="caption"> <span style="font-style: italic;"> View of Dinant</span>, Geo Poggenbeek. © Rijksmuseum </div>
+</body>
+{% endblock %}

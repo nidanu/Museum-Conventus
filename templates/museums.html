@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Museum List
+{% endblock %}
+
+{% block main %}
+<body background="static/drawing.jpg" style="background-attachment: fixed; background-size: contain;">
+    
+    <h1 style="text-align: left; margin-left: 5%; padding-bottom: 2%;"> Museum collections available on Museum Conventus </h1>
+    <div class="textbox" style="padding-top: 2%;">
+        {% for tuple in museum_list %}
+            <div style="border-bottom-style: groove; padding-bottom: 10px; border-width: 2px; border-color: #d4d6d8; margin-left: 50px; margin-right: 50px;">
+                <h2 style="text-align: left; margin-left: 50px; padding-top: 20px;"> {{ tuple[0][0]}} </h2>
+                    <p><a href="{{ tuple[1] }}"> {{ tuple[0] }} </a></p>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="caption" style="color: #495551;"> <span style="font-style: italic;"> A group of artists drawing</span>, Mattia Preti. ©Victoria and Albert Museum </div>
+</body>
+{% endblock %}
